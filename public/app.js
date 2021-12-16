@@ -35,7 +35,6 @@ let unsubscribe;
 
 auth.onAuthStateChanged((user) => {
   if (user) {
-    // Database Reference
     thingsRef = db.collection("things");
 
     createThing.onclick = () => {
@@ -48,14 +47,11 @@ auth.onAuthStateChanged((user) => {
       });
     };
 
-    // Query
     unsubscribe = thingsRef
       .where("uid", "==", user.uid)
-      .orderBy("createdAt") // Requires a query
+      .orderBy("createdAt") 
       .onSnapshot((querySnapshot) => {
-        // Map results to an array of li elements
 
-        debugger
         const items = querySnapshot.docs.map((doc) => {
           return `<li>${doc.data().name}</li>`;
         });
@@ -63,7 +59,6 @@ auth.onAuthStateChanged((user) => {
         thingsList.innerHTML = items.join("");
       });
   } else {
-    // Unsubscribe when the user signs out
     unsubscribe && unsubscribe();
   }
 });
